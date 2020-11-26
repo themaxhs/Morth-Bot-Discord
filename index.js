@@ -7,7 +7,7 @@ const client = new Discord.Client();
 const queue = new Map();
 
 client.once("ready", () => {
-  console.log("Ready!");
+  console.log("Morth esta vivo!");
 });
 
 client.once("reconnecting", () => {
@@ -34,7 +34,7 @@ client.on("message", async message => {
     stop(message, serverQueue);
     return;
   } else {
-    message.channel.send("You need to enter a valid command!");
+    message.channel.send("Debes ingresar un comando valido!");
   }
 });
 
@@ -44,12 +44,12 @@ async function execute(message, serverQueue) {
   const voiceChannel = message.member.voice.channel;
   if (!voiceChannel)
     return message.channel.send(
-      "You need to be in a voice channel to play music!"
+      "Debes estar en el canal de voz para poner musica!"
     );
   const permissions = voiceChannel.permissionsFor(message.client.user);
   if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
     return message.channel.send(
-      "I need the permissions to join and speak in your voice channel!"
+      "Necesito permiso para ingresar y hablar en tu canal de voz!"
     );
   }
 
@@ -84,24 +84,24 @@ async function execute(message, serverQueue) {
     }
   } else {
     serverQueue.songs.push(song);
-    return message.channel.send(`${song.title} has been added to the queue!`);
+    return message.channel.send(`${song.title} se ha agregado a la cola!`);
   }
 }
 
 function skip(message, serverQueue) {
   if (!message.member.voice.channel)
     return message.channel.send(
-      "You have to be in a voice channel to stop the music!"
+      "Debes estar en el canal de voz para cambiar de musica!"
     );
   if (!serverQueue)
-    return message.channel.send("There is no song that I could skip!");
+    return message.channel.send("No hay cancion para skipear!");
   serverQueue.connection.dispatcher.end();
 }
 
 function stop(message, serverQueue) {
   if (!message.member.voice.channel)
     return message.channel.send(
-      "You have to be in a voice channel to stop the music!"
+      "Debes estar en el canal de voz para parar la musica brother!"
     );
   serverQueue.songs = [];
   serverQueue.connection.dispatcher.end();
@@ -123,7 +123,7 @@ function play(guild, song) {
     })
     .on("error", error => console.error(error));
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-  serverQueue.textChannel.send(`Start playing: **${song.title}**`);
+  serverQueue.textChannel.send(`Ahora suena: **${song.title}**`);
 }
 
 client.login(token);
